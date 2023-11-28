@@ -38,8 +38,4 @@ public class Product {
     public Double getTotal(){
         return quantity * price;
     }
-
-    public String toString(){
-        return getName()+ "," + getTotal();
-    }
 }
