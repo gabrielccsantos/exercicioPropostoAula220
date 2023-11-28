@@ -1,27 +1,52 @@
 package application;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
+import model.entities.Product;
+
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        String path = "/home/gabriel/pastasArquivos/teste";
+        Locale.setDefault(Locale.US);
+        Scanner read = new Scanner(System.in);
 
-        //Clica com o direito na sua pasta de arquivos de programas e libera a permissao
-        //pra qualquer usuario poder ler escrecer e editar
+        List<Product> listProd = new ArrayList<>();
 
-        String[] list = new String[] {"Oi", "Tudo bem?", "Tchau!"};
+        System.out.print("Digite o caminho do arquivo: ");
+        String filePathToRead = read.nextLine();
 
-        try(BufferedWriter bw = new BufferedWriter(new FileWriter(path))){
-            for(String str : list){
-                bw.write(str);
-                bw.newLine();
+        File file = new File(filePathToRead);
+        String fileParentFolder = file.getParent();
+
+        boolean folderToWrite = new File(fileParentFolder + "/out").mkdir();
+
+        String fileToWrite = fileParentFolder + "/out/summary.txt";
+
+        try(BufferedReader br = new BufferedReader(new FileReader(filePathToRead))){
+            while(br.ready()){
+                String[] list = br.readLine().split(",");
+                String name = list[0];
+                double price = Double.parseDouble(list[1]);
+                int quantity = Integer.parseInt(list[2]);
+
+                listProd.add(new Product(name, price,quantity));
+            }
+            try(BufferedWriter bw = new BufferedWriter(new FileWriter(fileToWrite))){
+                for(Product product : listProd){
+                    bw.write(product.getName() + "," + String.format("%.2f", product.getTotal()));
+                    bw.newLine();
+                }
+                System.out.println("Sucess");
+            }
+            catch (IOException e){
+                System.out.println("Error: " + e.getMessage());
             }
         }
         catch (IOException e){
-            e.printStackTrace();
-            System.out.println("Error: " + e.getMessage());
+            System.out.println("Error:" + e.getMessage());
         }
     }
 }
