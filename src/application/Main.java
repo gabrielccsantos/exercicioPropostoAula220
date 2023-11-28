@@ -6,7 +6,7 @@ import java.io.IOException;
 
 public class Main {
     public static void main(String[] args) {
-        String path = "C:\\Users\\biels\\IdeaProjects";
+        String path = "/home/gabriel/pastasArquivos/teste";
 
         //Clica com o direito na sua pasta de arquivos de programas e libera a permissao
         //pra qualquer usuario poder ler escrecer e editar
